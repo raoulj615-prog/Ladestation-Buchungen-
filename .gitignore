@@ -1,0 +1,16 @@
+# Docker Volume Daten & temporäre Datenbankdaten
+mysql_data/
+db_data/
+*.sql.gz
+
+# Betriebssystem-spezifische Dateien
+.DS_Store
+Thumbs.db
+
+# IDE & Editor-Dateien (VS Code, PhpStorm)
+.idea/
+.vscode/
+*.swp
+
+# Logs & temporäre Dateien
+*.log
