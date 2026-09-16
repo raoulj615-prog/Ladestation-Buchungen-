@@ -16,7 +16,7 @@ services:
     image: mariadb # neueste Version von MariaDB
     restart: always # oder "no" wenn es bei Start von Docker nicht automatisch gestartet werden soll
     ports:
-      - "3306:3306" # alternativer Port: "3307:3306" (intern, d.h. zweite Zahl immer auf 3306 lassen)
+      - "3307:3306" # alternativer Port: "3307:3306" (intern, d.h. zweite Zahl immer auf 3306 lassen)
     environment: # ggf. Passwörter anpassen, aber dann auch unten bei phpmyadmin ändern!
       MYSQL_ROOT_PASSWORD: rootpasswort
       MYSQL_DATABASE: meine_db
@@ -24,6 +24,7 @@ services:
       MYSQL_PASSWORD: benutzerpasswort
       TZ: Europe/Berlin  # Deutsche Zeitzone
     volumes: # persitente Speichern der Datenbank
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - db_data:/var/lib/mysql
   
   phpmyadmin:

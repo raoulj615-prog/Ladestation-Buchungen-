@@ -1,7 +1,6 @@
-CREATE DATABASE IF NOT EXISTS ladestationen;
-USE ladestationen;
+CREATE DATABASE IF NOT EXISTS meine_db;
+USE meine_db;
 
--- Tabelle 1: Ladestationen
 CREATE TABLE IF NOT EXISTS stations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -10,7 +9,6 @@ CREATE TABLE IF NOT EXISTS stations (
     price_kwh DECIMAL(5,2) NOT NULL
 );
 
--- Tabelle 2: Buchungen
 CREATE TABLE IF NOT EXISTS bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     station_id INT NOT NULL,
@@ -21,7 +19,6 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (station_id) REFERENCES stations(id) ON DELETE CASCADE
 );
 
--- Beispieldaten
 INSERT INTO stations (name, power_kw, type, price_kwh) VALUES
 ('Säule 1 - Friedberg Süd', 11, 'Typ 2 AC', 0.45),
 ('Säule 2 - Campus Friedberg', 22, 'Typ 2 AC', 0.49),

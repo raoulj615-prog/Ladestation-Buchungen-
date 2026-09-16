@@ -6,21 +6,21 @@ class Database {
 
     public static function getConnection(): PDO {
         if (self::$instance === null) {
-            $host = getenv('DB_HOST') ?: 'localhost';
-            $db   = getenv('DB_NAME') ?: 'ladestationen';
-            $user = getenv('DB_USER') ?: 'root';
-            $pass = getenv('DB_PASS') ?: 'secret';
+            // WICHTIG: Host muss 'db' heißen (Name des MariaDB-Services in docker-compose)
+            $host = 'db'; 
+            $port = '3306';
+            $dbname = 'meine_db';          // Aus docker-compose.yml (Zeile 22)
+            $user = 'benutzer';            // Aus docker-compose.yml (Zeile 23)
+            $pass = 'benutzerpasswort';    // Aus docker-compose.yml (Zeile 24)
 
-            $dsn = "mysql:host={$host};dbname={$db};charset=utf8mb4";
+            $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
             
             try {
-                // PDO mit Fehler-Modus initialisieren
                 self::$instance = new PDO($dsn, $user, $pass, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]);
             } catch (PDOException $e) {
-                // Keine sensiblen Passwörter im Frontend ausgeben
                 die("Datenbank-Verbindung fehlgeschlagen: " . $e->getMessage());
             }
         }
