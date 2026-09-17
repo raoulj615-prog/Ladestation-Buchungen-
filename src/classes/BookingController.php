@@ -14,8 +14,14 @@ class BookingController {
     }
 
     public function getBookings(): array {
-        return $this->model->getBookings();
+    $userId = $_SESSION['user_id'] ?? 0;
+
+    if ($userId <= 0) {
+        return [];
     }
+
+    return $this->model->getBookings($userId);
+}
 
     // Verarbeitet die Buchungsanfrage
     public function processBooking(array $data): array {
@@ -35,11 +41,37 @@ class BookingController {
         }
 
         // Speichern
-        $success = $this->model->createBooking($stationId, $licensePlate, $startTime, $duration);
+       $userId = $_SESSION['user_id'] ?? 0;
+
+if ($userId <= 0) {
+    return [
+        'success' => false,
+        'message' => 'Bitte melden Sie sich zuerst an.'
+    ];
+}
+
+$success = $this->model->createBooking(
+    $userId,
+    $stationId,
+    $licensePlate,
+    $startTime,
+    $duration
+);
         if ($success) {
             return ['success' => true, 'message' => "Buchung für {$licensePlate} erfolgreich gespeichert!"];
         }
 
         return ['success' => false, 'message' => 'Datenbankfehler beim Speichern der Buchung.'];
     }
+
+public function deleteBooking(int $bookingId): bool
+{
+    $userId = $_SESSION['user_id'] ?? 0;
+
+    if ($userId <= 0) {
+        return false;
+    }
+
+    return $this->model->deleteBooking($bookingId, $userId);
 }
+    }

@@ -1,6 +1,9 @@
 <?php
 // src/api/book.php
+session_start();
+
 header('Content-Type: application/json');
+
 require_once __DIR__ . '/../classes/BookingController.php';
 
 // JSON-Body aus dem Fetch-Request einlesen

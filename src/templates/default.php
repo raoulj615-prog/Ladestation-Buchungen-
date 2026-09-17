@@ -33,9 +33,34 @@
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.php">⚡ VoltReserve</a>
         <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="index.php?page=home">Stationen buchen</a>
-            <a class="nav-link" href="index.php?page=bookings">Buchungsübersicht</a>
-        </div>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+
+        <a class="nav-link" href="index.php?page=home">
+            Stationen buchen
+        </a>
+
+        <a class="nav-link" href="index.php?page=bookings">
+            Meine Buchungen
+        </a>
+
+        <a class="nav-link" href="index.php?page=logout">
+            Abmelden
+        </a>
+
+    <?php else: ?>
+
+        <a class="nav-link" href="index.php?page=register">
+            Registrieren
+        </a>
+
+        <a class="nav-link" href="index.php?page=login">
+            Anmelden
+        </a>
+
+    <?php endif; ?>
+
+</div>
     </div>
 </nav>
 

@@ -15,11 +15,12 @@ class MyBookingsView {
                     <th>Beginn</th>
                     <th>Dauer</th>
                     <th>Status</th>
+                    <th>Aktion</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($bookings)): ?>
-                    <tr><td colspan="6" class="text-center py-3">Keine Buchungen vorhanden.</td></tr>
+                    <tr><td colspan="7" class="text-center py-3">Keine Buchungen vorhanden.</td></tr>
                 <?php else: ?>
                     <?php foreach ($bookings as $b): ?>
                         <tr>
@@ -28,7 +29,37 @@ class MyBookingsView {
                             <td><span class="badge bg-secondary"><?= htmlspecialchars($b['license_plate']); ?></span></td>
                             <td><?= date('d.m.Y H:i', strtotime($b['start_time'])); ?> Uhr</td>
                             <td><?= $b['duration_hours']; ?> Std.</td>
-                            <td><span class="badge bg-success">Bestätigt</span></td>
+                            <td>
+    <?php
+    $start = strtotime($b['start_time']);
+    $end = $start + ($b['duration_hours'] * 3600);
+    $now = time();
+
+    if ($now < $start) {
+        $status = 'Bevorstehend';
+        $badge = 'bg-primary';
+    } elseif ($now >= $start && $now < $end) {
+        $status = 'Aktiv';
+        $badge = 'bg-success';
+    } else {
+        $status = 'Vergangen';
+        $badge = 'bg-secondary';
+    }
+    ?>
+
+    <span class="badge <?= $badge ?>">
+        <?= $status; ?>
+    </span>
+</td>
+                            <td>
+                                <form method="POST" action="index.php?page=cancelBooking"
+                                 onsubmit="return confirm('Möchten Sie diese Buchung wirklich stornieren?');">
+                                <input type="hidden" name="booking_id" value="<?= $b['id']; ?>">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                  Stornieren
+                                </button>
+                               </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
